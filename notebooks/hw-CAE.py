@@ -7,6 +7,8 @@ $$
 
 $$
 使用電腦輔助位置分析試寫一電腦程式分析當0<=θ2<=360。時，θ3和θ4的角度變化
+
+[Machine Dynamics 4 Bar Linkage – GeoGebra](https://www.geogebra.org/m/BueCG9ch)
 """
 
 # %%
@@ -22,15 +24,15 @@ r4: float = 5.0 # m
 precision: float = 1e-2
 
 import numpy as np
-from numpy import sin, cos, pi
+from numpy import sin, cos, pi, deg2rad, rad2deg
 import matplotlib.pyplot as plt
 
 # 1. 設定輸入角速度
-omega_2 = 100 # rpm
-omega_2 = omega_2 * 2 * pi / 60 # rad/s
+# omega_2 = 100 # rpm
+# omega_2 = omega_2 * 2 * pi / 60 # rad/s
 
 # 2. 設定輸入角度
-theta_2 = np.linspace(0, 2 * pi, 1000)
+# theta_2 = np.linspace(0, 2 * pi, 1000)
 
 # %%
 
@@ -53,17 +55,17 @@ def epsilon_2(theta_2: float, theta_3: float, theta_4: float) -> float:
 
 # 4. 誤差修正值
 
-def delta_theta_3(theta_3: float, theta_4: float) -> float:
-    e1 = epsilon_1(theta_3, theta_3, theta_4)
-    e2 = epsilon_2(theta_3, theta_4)
+def delta_theta_3(theta_2: float, theta_3: float, theta_4: float) -> float:
+    e1 = epsilon_1(theta_2, theta_3, theta_4)
+    e2 = epsilon_2(theta_2, theta_3, theta_4)
     return (
         (e1 * cos(theta_3) + e2 * sin(theta_3))
         / sin(theta_3 - theta_4)
     )
 
-def delta_theta_4(theta_3: float, theta_4: float) -> float:
-    e1 = epsilon_1(theta_3, theta_4)
-    e2 = epsilon_2(theta_3, theta_4)
+def delta_theta_4(theta_2: float, theta_3: float, theta_4: float) -> float:
+    e1 = epsilon_1(theta_2, theta_3, theta_4)
+    e2 = epsilon_2(theta_2, theta_3, theta_4)
     return (
         (e1 * cos(theta_4) + e2 * sin(theta_4))
         / sin(theta_3 - theta_4)
@@ -71,5 +73,31 @@ def delta_theta_4(theta_3: float, theta_4: float) -> float:
 # %%
 
 # 5. 
-e1 
-while 
+
+t2 = deg2rad(0)
+t3 = deg2rad(40) # rad
+t4 = deg2rad(113) # rad
+# t3 and t4 are arbitrarily initial values
+# t3 - t4 must not be 0 (that is, t3 != t4), else there will be a division by 0 error
+
+count = 0
+
+# %%
+count += 1
+e1 = epsilon_1(t2, t3, t4)
+e2 = epsilon_2(t2, t3, t4)
+dt3 = delta_theta_3(t2, t3, t4)
+dt4 = delta_theta_4(t2, t3, t4)
+t3 = (t3 + dt3) % (2 * pi)
+t4 = (t4 + dt4) % (2 * pi)
+
+print(f"count = {count}")
+print(f"e1 = {e1}")
+print(f"e2 = {e2}")
+print(f"dt3 = {dt3}")
+print(f"dt4 = {dt4}")
+print(f"t2 = {rad2deg(t2)}")
+print(f"t3 = {rad2deg(t3)}")
+print(f"t4 = {rad2deg(t4)}")
+
+# %%
