@@ -53,35 +53,55 @@ def epsilon_2(theta_2: float, theta_3: float, theta_4: float) -> float:
         - r4 * sin(theta_4)
     )
 
+# %% [markdown]
+"""
+$$
+-r_3 \cdot \sin (t_3) \cdot x
++r_4 \cdot \sin (t_4) \cdot y
+= -e_1,
+
+ r_3 \cdot \cos (t_3) \cdot x
+-r_4 \cdot \cos (t_4) \cdot y
+= -e_2
+
+$$
+
+"""
+
+# %%
+
 # 4. 誤差修正值
 
 def delta_theta_3(theta_2: float, theta_3: float, theta_4: float) -> float:
     e1 = epsilon_1(theta_2, theta_3, theta_4)
     e2 = epsilon_2(theta_2, theta_3, theta_4)
     return (
-        (e1 * cos(theta_3) + e2 * sin(theta_3))
-        / sin(theta_3 - theta_4)
+        (e1 * cos(theta_4) + e2 * sin(theta_4))
+        / (r3 * sin(theta_3 - theta_4))
     )
 
 def delta_theta_4(theta_2: float, theta_3: float, theta_4: float) -> float:
     e1 = epsilon_1(theta_2, theta_3, theta_4)
     e2 = epsilon_2(theta_2, theta_3, theta_4)
     return (
-        (e1 * cos(theta_4) + e2 * sin(theta_4))
-        / sin(theta_3 - theta_4)
+        (e1 * cos(theta_3) + e2 * sin(theta_3))
+        / (r4 * sin(theta_3 - theta_4))
     )
 # %%
 
 # 5. 
 
 t2 = deg2rad(0)
-t3 = deg2rad(40) # rad
+t3 = deg2rad(66) # rad
 t4 = deg2rad(113) # rad
 # t3 and t4 are arbitrarily initial values
 # t3 - t4 must not be 0 (that is, t3 != t4), else there will be a division by 0 error
 
 count = 0
 
+print(f"t2 = {t2:.3f} rad or {rad2deg(t2):.3f} deg")
+print(f"t3 = {t3:.3f} rad or {rad2deg(t3):.3f} deg")
+print(f"t4 = {t4:.3f} rad or {rad2deg(t4):.3f} deg")
 # %%
 count += 1
 e1 = epsilon_1(t2, t3, t4)
@@ -96,8 +116,9 @@ print(f"e1 = {e1}")
 print(f"e2 = {e2}")
 print(f"dt3 = {dt3}")
 print(f"dt4 = {dt4}")
-print(f"t2 = {rad2deg(t2)}")
-print(f"t3 = {rad2deg(t3)}")
-print(f"t4 = {rad2deg(t4)}")
+print(f"t2 = {t2:.3f} rad or {rad2deg(t2):.3f} deg")
+print(f"t3 = {t3:.3f} rad or {rad2deg(t3):.3f} deg")
+print(f"t4 = {t4:.3f} rad or {rad2deg(t4):.3f} deg")
+
 
 # %%
